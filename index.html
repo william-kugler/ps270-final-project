@@ -116,7 +116,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/header-attrs-2.17/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.30/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1544,9 +1544,30 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 
 <div class="d-article">
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://vincentarelbundock.github.io/WDI/'>WDI</a></span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/WDI/man/WDI.html'>WDI</a></span><span class='op'>(</span>country <span class='op'>=</span> <span class='st'>"all"</span>, indicator <span class='op'>=</span> <span class='st'>"NY.GDP.PCAP.KD"</span>, start <span class='op'>=</span> <span class='fl'>2000</span>, end <span class='op'>=</span> <span class='fl'>2022</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>                      country iso2c iso3c year NY.GDP.PCAP.KD
+1 Africa Eastern and Southern    ZH   AFE 2022       1440.430
+2 Africa Eastern and Southern    ZH   AFE 2021       1425.209
+3 Africa Eastern and Southern    ZH   AFE 2020       1399.398
+4 Africa Eastern and Southern    ZH   AFE 2019       1479.372
+5 Africa Eastern and Southern    ZH   AFE 2018       1489.942
+6 Africa Eastern and Southern    ZH   AFE 2017       1490.911</code></pre>
+</div>
 <h2 id="project-thoughts">Project thoughts</h2>
 <p>I am interested in exploring data related to how the economy in a certain part of the world influences voting patterns and human rights. It would be interesting to look at a comparison of voting breakdowns and human rights in a poor country in Africa with a successful country in North America.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<h2 id="milestone-2-tentative-research-questionproposal-paragraph">Milestone 2: Tentative Research Question/Proposal Paragraph</h2>
+<p>My research question is “How does economic development influence voting patterns and human rights outcomes across countries from 2000 to 2022?” Do wealthier countries show more democratic voting behavior and stronger human rights protections than poorer countries? My hypothesis is that higher levels of economic development will be associated with more democratic voting patters and more human rights protections. A stronger economy can lead to higher education levels, a stronger middle class, institutional structure, etc. My primary independent variable is economic development in GDP per capita (US dollar). My dependent variables are voting patterns and human rights, measured by polls and laws. There will be significant variation in economic development by country, especially if I look at and compare countries on different continents. A positive relationship between GDP per capita and democratic voting behavior/human rights would support my hypothesis (economy is growing, more human rights and democratic voters). No relationship would be shown if a poorer country performed better on democratic measures or human rights protections than wealthy ones, this would show economic development does not systematically influence political or human rights outcomes.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
