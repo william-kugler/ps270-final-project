@@ -26,3 +26,26 @@ I am interested in exploring data related to how the economy in a certain part o
 
 ## Milestone 2: Tentative Research Question/Proposal Paragraph
 My research question is "How does economic development influence voting patterns and human rights outcomes across countries from 2000 to 2022?" Do wealthier countries show more democratic voting behavior and stronger human rights protections than poorer countries? My hypothesis is that higher levels of economic development will be associated with more democratic voting patters and more human rights protections. A stronger economy can lead to higher education levels, a stronger middle class, institutional structure, etc. My primary independent variable is economic development in GDP per capita (US dollar). My dependent variables are voting patterns and human rights, measured by polls and laws. There will be significant variation in economic development by country, especially if I look at and compare countries on different continents. A positive relationship between GDP per capita and democratic voting behavior/human rights would support my hypothesis (economy is growing, more human rights and democratic voters). No relationship would be shown if a poorer country performed better on democratic measures or human rights protections than wealthy ones, this would show economic development does not systematically influence political or human rights outcomes.
+
+
+
+
+## Milestone 3: Loading, Cleaning, and Visualizing the Data
+
+```{r}
+library(tidyverse)
+library(WDI)
+library(scales)
+
+raw_data <- WDI (country = "all", indicator <- c(gdp_per_cap = "NY.GDP.PCAP.KD", human_rights = "VA.EST"), start = 2021, end = 2021, extra = TRUE)
+
+
+clean_data <- raw_data |>
+  filter(region != "Aggregates") |>
+  drop_na(gdp_per_cap, human_rights) |>
+  select(country, region, gdp_per_cap, human_rights)
+
+ggplot(clean_data, aes(x = gdp_per_cap, y = human_rights, color = region)) + geom_point(alpha = 0.7, size = 2) + geom_smooth(method = "lm", color = "black", linetype = "dashed", se = FALSE) + scale_x_log10(labels = label_dollar()) + theme_minimal() + labs(title = "Economic Development vs. Voice and Accountability (2021)", subtitle = "Higher GDP per capita generally correlates with stronger democratic measures", x = "GDP Per Capita (Log Scale, Constant 2015 US$)", y = "Voice & Accountability Score", color = "World Region", caption = "Data Source: World Development Indicators (WDI)") + theme(legend.position = "bottom", plot.title = element_text(face = "bold"))
+
+```
+
