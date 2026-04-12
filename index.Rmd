@@ -32,20 +32,45 @@ My research question is "How does economic development influence voting patterns
 
 ## Milestone 3: Loading, Cleaning, and Visualizing the Data
 
+
+
+
 ```{r}
 library(tidyverse)
 library(WDI)
 library(scales)
 
-raw_data <- WDI (country = "all", indicator <- c(gdp_per_cap = "NY.GDP.PCAP.KD", human_rights = "VA.EST"), start = 2021, end = 2021, extra = TRUE)
+raw_data <- WDI (country = c("ET", "CA"), indicator <- c(gdp_per_cap = "NY.GDP.PCAP.KD", social_outcome = "SP.DYN.LE00.IN"), start = 2000, end = 2021, extra = FALSE)
 
 
-clean_data <- raw_data |>
-  filter(region != "Aggregates") |>
-  drop_na(gdp_per_cap, human_rights) |>
-  select(country, region, gdp_per_cap, human_rights)
+clean_comparison <- raw_data |>
+  rename(Year = year) |>
+  drop_na(gdp_per_cap, social_outcome) 
 
-ggplot(clean_data, aes(x = gdp_per_cap, y = human_rights, color = region)) + geom_point(alpha = 0.7, size = 2) + geom_smooth(method = "lm", color = "black", linetype = "dashed", se = FALSE) + scale_x_log10(labels = label_dollar()) + theme_minimal() + labs(title = "Economic Development vs. Voice and Accountability (2021)", subtitle = "Higher GDP per capita generally correlates with stronger democratic measures", x = "GDP Per Capita (Log Scale, Constant 2015 US$)", y = "Voice & Accountability Score", color = "World Region", caption = "Data Source: World Development Indicators (WDI)") + theme(legend.position = "bottom", plot.title = element_text(face = "bold"))
+ggplot(clean_comparison, aes(x = Year, y = social_outcome, color = country)) + geom_line(size = 1.2) + geom_point() + theme_minimal() + labs(title = "Development Trajectory: Canada vs. Ethiopia", subtitle = "Comparing economic influence on life expectancy (Human Rights Proxy", x = "Year", y = "Life Expectancy (Years)", color = "country", caption = "Data Source: World Development Indicators (WDI)") + theme(legend.position = "bottom", plot.title = element_text(face = "bold"))
 
 ```
 
+
+
+
+
+## Milestone 4: One visualization and one analysis that attempts to answer my research question
+
+
+
+
+
+```{r}
+library(dplyr)
+library(knitr)
+analysis_table <- clean_comparison |>
+  group_by(country) |>
+  summarize(`Avg GDP` = mean(gdp_per_cap), `Longevity Increase` = max(social_outcome) - min(social_outcome), `Wealth-Health Correlation` = cor(gdp_per_cap, social_outcome))
+
+knitr:: kable(analysis_table, digits = 2, caption = "Table 1: Economic Correlation with Social Outcomes (2000-2021)")
+```
+
+Brief Discussion:
+This table provides a fascinating contrast between a developed North American economy and an emerging African economy. Both show a strong statistical link between wealth and health. In the poor country (Ethiopia), the economy acts as a "survival engine" - driving human rights and health improvements. In a wealthy country (Canada), the economy acts as a "maintenance engine" - sustaining high standards but seeing diminishing returns for each dollar.
+Because the economy in Ethiopia is such a matter of life and death(as seen by the 0.96 correlation), voters there might prioritize economic growth and stability far more than voters in Canada, where the "Longevity Increase" has slowed down and basic survival is already guaranteed.
