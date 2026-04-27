@@ -74,3 +74,34 @@ knitr:: kable(analysis_table, digits = 2, caption = "Table 1: Economic Correlati
 Brief Discussion:
 This table provides a fascinating contrast between a developed North American economy and an emerging African economy. Both show a strong statistical link between wealth and health. In the poor country (Ethiopia), the economy acts as a "survival engine" - driving human rights and health improvements. In a wealthy country (Canada), the economy acts as a "maintenance engine" - sustaining high standards but seeing diminishing returns for each dollar.
 Because the economy in Ethiopia is such a matter of life and death(as seen by the 0.96 correlation), voters there might prioritize economic growth and stability far more than voters in Canada, where the "Longevity Increase" has slowed down and basic survival is already guaranteed.
+
+
+
+## Scatter Plot with a Regression Line
+```{r}
+library(tidyverse)
+library(WDI)
+library(scales)
+
+
+countries_list <- c("US", "CA", "MX", "ET", "ZA", "NG", "CN", "JP", "IN", "BR", "AR", "DE", "FR", "GB")
+
+raw_data_large <- WDI(country = countries_list, indicator = c(gdp_per_cap = "NY.GDP.PCAP.KD", life_exp = "SP.DYN.LEOO.IN", voice_account = "VA.EST"), start = 2010, end = 2021, extra = TRUE)
+
+clean_large <- raw_data_large |>
+  filter(region != "Aggregates") |>
+  rename(Year = year) |>
+  drop_na(gdp_per_cap, life_exp, voice_account)
+```
+
+
+
+
+
+
+## Dependent Variables
+In my research, democracy and human rights are being measured using "proxy variables", or statistical indicators that stand in for these broader, more complicated concepts.
+
+For measuring democracy, I used the Voice and Accountability indicator. This is a composite score that evaluates how much a country's citizens can participate in selecting their own government, as well as the level of freedoms such as expression, association, and a free press. Higher scores indicate a more robust democratic enviornment where "voting patterns" actually influence policy.
+
+For measuring human rights, I used the Life Expectancy at Birth indicator as a proxy for the most fundamental right: the Right to Life and Health. In developing countries like Ethiopia, gains in life expectancy reflect a government's success in protecting basic survival needs such as food, water, and safety. By comparing this to GDP, we are measuring the "Efficiency of Rights", or how effectiviely a country converts its resources and wealth into the preservation of human life.
