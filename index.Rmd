@@ -18,7 +18,9 @@ The central hypothesis of this study is that higher levels of economic developme
 
 ## Data
 
-My predictor for this hypothesis is economic development, operationalized through GDP per Capita (constant 2017 international $). This data is pulled from the World Bank's World Development Indicators (WDI). I will be using a Logaritmic Scale (log10) as a way to measure proportions instead of just raw totals; it is a way to create a fair ground to compare very rich and very poor countries. 
+My predictor for this hypothesis is economic development, operationalized through GDP per Capita (constant 2017 international $). This data is pulled from the World Bank's World Development Indicators (WDI). I will be using a Logarithmic Scale (log10) as a way to measure proportions instead of just raw totals; it is a way to create a fair ground to compare very rich and very poor countries. By applying this transformation, the analysis accounts for the 'diminishing returns' of wealth, acknowledging that a marginal increase in income has a far greater impact on the institutional caliber of a developing nation than on a wealthy one. This ensures that the extreme gaps of global economies does not skew my results, allowing a more accurate visualization of how incremental economic growth correlates with political change. While GDP measures a country's wealth, the Varieties of Democracy (V-Dem) data shows us the actual political results. With these scores, we can see exactly how a powerful economy turns into real-world benfits like human rights and fair elections.
+
+
 
 
 
