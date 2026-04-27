@@ -10,12 +10,8 @@ output:
 ```{r}
 library(tidyverse)
 library(WDI)
-```
-
-
-```{r}
-data <- WDI(country = "all", indicator = "NY.GDP.PCAP.KD", start = 2000, end = 2022)
-head(data)
+library(vdemdata)
+head(vdem)
 ```
 
 ## Project thoughts
@@ -32,23 +28,31 @@ My research question is "How does economic development influence voting patterns
 
 ## Milestone 3: Loading, Cleaning, and Visualizing the Data
 
-
-
-
 ```{r}
 library(tidyverse)
 library(WDI)
 library(scales)
+library(vdemdata)
 
-raw_data <- WDI (country = c("ET", "CA"), indicator <- c(gdp_per_cap = "NY.GDP.PCAP.KD", social_outcome = "SP.DYN.LE00.IN"), start = 2000, end = 2021, extra = FALSE)
+
+gdp_data <- WDI(country = c("ETH", "CAN"), indicator = "NY.GDP.PCAP.KD", start = 2010, end = 2021) |>
+  rename(gdp_per_cap = NY.GDP.PCAP.KD) |>
+  mutate(year = as.numeric(year))
+  
+
+vdem_subset <- vdem |>
+  filter(year >= 2010 & year <= 2021) |>
+  filter(country_name %in% c("Canada", "Ethiopia")) |>
+  select(country_name, year, country_text_id, v2x_polyarchy, v2x_libdem) |>
+  mutate(year = as.numeric(year))
+
+clean_data <- vdem_subset |>
+  left_join(gdp_data, by = c("country_text_id" = "iso3c", "year" = "year")) |>
+  drop_na(gdp_per_cap, v2x_polyarchy)
 
 
-clean_comparison <- raw_data |>
-  rename(Year = year) |>
-  drop_na(gdp_per_cap, social_outcome) 
 
-ggplot(clean_comparison, aes(x = Year, y = social_outcome, color = country)) + geom_line(size = 1.2) + geom_point() + theme_minimal() + labs(title = "Development Trajectory: Canada vs. Ethiopia", subtitle = "Comparing economic influence on life expectancy (Human Rights Proxy", x = "Year", y = "Life Expectancy (Years)", color = "country", caption = "Data Source: World Development Indicators (WDI)") + theme(legend.position = "bottom", plot.title = element_text(face = "bold"))
-
+ggplot(clean_data, aes(x = year, y = v2x_polyarchy, color = country_name)) + geom_line(linewidth = 1.2) + geom_point() + theme_minimal() + labs(title = "Democracy Trajectory: Canada vs. Ethiopia", subtitle = "Measuring Electoral Democracy (V-Dem Polyarchy Index)", x = "Year", y = "Democracy Score(0-1)", color = "Country", caption = "Data Source: vdem)") + theme(legend.position = "bottom", plot.title = element_text(face = "bold"))
 ```
 
 
@@ -64,12 +68,18 @@ ggplot(clean_comparison, aes(x = Year, y = social_outcome, color = country)) + g
 ```{r}
 library(dplyr)
 library(knitr)
-analysis_table <- clean_comparison |>
-  group_by(country) |>
-  summarize(`Avg GDP` = mean(gdp_per_cap), `Longevity Increase` = max(social_outcome) - min(social_outcome), `Wealth-Health Correlation` = cor(gdp_per_cap, social_outcome))
+global_analysis_table <- global_clean |>
+  select(country_name, gdp_per_cap, v2x_polyarchy) |>
+  rename(Country = country_name, `GDP per Capita` = gdp_per_cap, `Democracy Score` = v2x_polyarchy) |>
+  arrange(desc(`GDP per Capita`)) 
 
-knitr:: kable(analysis_table, digits = 2, caption = "Table 1: Economic Correlation with Social Outcomes (2000-2021)")
+knitr:: kable(global_analysis_table, digits = 2, caption = "Table 1: Global Snapshot of Wealth vs Democracy (2021)")
+
+global_cor <- cor(global_clean$gdp_per_cap, global_clean$v2x_polyarchy, use = "complete.obs")
 ```
+Analysis:
+The calculated correlation coefficient of 0.65 provides strong evidential support for the hypothesis that economic development serves as a foundational influence for democratic outcomes across diverse global contexts. While the apex nations demonstrate that high levels of wealth are consistently paired with dominating democracy, the presence of outliers like China suggests that economic growth is a necessary but not always sufficient condition for political liberalization. Ultimately, this positive relationship indicates that as nations like Ethiopia and Nigeria continue to develop, their structural and institutional capacity for sustaining democratic institutions and human rights protections likely increases.
+
 
 Brief Discussion:
 This table provides a fascinating contrast between a developed North American economy and an emerging African economy. Both show a strong statistical link between wealth and health. In the poor country (Ethiopia), the economy acts as a "survival engine" - driving human rights and health improvements. In a wealthy country (Canada), the economy acts as a "maintenance engine" - sustaining high standards but seeing diminishing returns for each dollar.
@@ -77,22 +87,27 @@ Because the economy in Ethiopia is such a matter of life and death(as seen by th
 
 
 
-## Scatter Plot with a Regression Line
+## Scatter Plot with a Regression Line: The "Rights vs Wealth" Scatter Plot
+
 ```{r}
-library(tidyverse)
-library(WDI)
-library(scales)
+library(tidyverse) 
+library(WDI) 
+library(vdemdata)
+library(ggrepel)
 
+global_list <- c("CAN", "USA", "MEX", "ETH", "ZAF", "NGA", "KEN", "DEU", "FRA", "GBR", "CHN", "JPN", "IND", "AUS", "BRA", "ARG", "CHL") 
 
-countries_list <- c("US", "CA", "MX", "ET", "ZA", "NG", "CN", "JP", "IN", "BR", "AR", "DE", "FR", "GB")
+gdp_2021 <- WDI(country = global_list, indicator = "NY.GDP.PCAP.KD", start = 2021, end = 2021) |> rename(gdp_per_cap = NY.GDP.PCAP.KD) |> mutate(year = as.numeric(year)) 
 
-raw_data_large <- WDI(country = countries_list, indicator = c(gdp_per_cap = "NY.GDP.PCAP.KD", life_exp = "SP.DYN.LEOO.IN", voice_account = "VA.EST"), start = 2010, end = 2021, extra = TRUE)
+vdem_2021 <- vdem |> filter(year == 2021 & country_text_id %in% global_list) |> select(country_name, year, country_text_id, v2x_polyarchy) |> 
+  mutate(year = as.numeric(year)) 
 
-clean_large <- raw_data_large |>
-  filter(region != "Aggregates") |>
-  rename(Year = year) |>
-  drop_na(gdp_per_cap, life_exp, voice_account)
+global_clean <- vdem_2021 |> left_join(gdp_2021, by = c("country_text_id" = "iso3c", "year" = "year"))
+
+ggplot(global_clean, aes(x = gdp_per_cap, y = v2x_polyarchy)) + geom_point(color = "darkblue", size = 3, alpha = 0.6) + geom_text_repel(aes(label = country_name), size = 3, max.overlaps = 15) + geom_smooth(method = "lm", color = "red", se = FALSE) + scale_x_log10(labels = scales::label_dollar()) + theme_minimal() + labs(title = "Economic Development vs. Democratic Outcomes", subtitle = "Testing the hypothesis: Do wealthier countries have have stronger democratic patterns?", x = "GDP per Capita (Log Scale)", y = "Democracy Score (0-1)", color = "Country", caption = "Data Source: V-Dem and World Bank")
 ```
+
+
 
 
 
