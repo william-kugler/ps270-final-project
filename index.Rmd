@@ -18,7 +18,7 @@ The central hypothesis of this study is that higher levels of economic developme
 
 ## Data
 
-My predictor for this hypothesis is economic development, operationalized throught GDP per Capita (constant 2017 international $). This data is pulled from the World Bank's World Development Indicators (WDI). I will be using a Logaritmic Scale (log10) as a way to measure proportions instead of just raw totals; it is a way to create a fair ground to compare very rich and very poor countries. 
+My predictor for this hypothesis is economic development, operationalized through GDP per Capita (constant 2017 international $). This data is pulled from the World Bank's World Development Indicators (WDI). I will be using a Logaritmic Scale (log10) as a way to measure proportions instead of just raw totals; it is a way to create a fair ground to compare very rich and very poor countries. 
 
 
 
