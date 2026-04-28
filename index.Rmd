@@ -18,10 +18,18 @@ The central hypothesis of this study is that higher levels of economic developme
 
 ## Data
 
-My predictor for this hypothesis is economic development, operationalized through GDP per Capita (constant 2017 international $). This data is pulled from the World Bank's World Development Indicators (WDI). I will be using a Logarithmic Scale (log10) as a way to measure proportions instead of just raw totals; it is a way to create a fair ground to compare very rich and very poor countries. By applying this transformation, the analysis accounts for the 'diminishing returns' of wealth, acknowledging that a marginal increase in income has a far greater impact on the institutional caliber of a developing nation than on a wealthy one. This ensures that the extreme gaps of global economies does not skew my results, allowing a more accurate visualization of how incremental economic growth correlates with political change. While GDP measures a country's wealth, the Varieties of Democracy (V-Dem) data shows us the actual political results. With these scores, we can see exactly how a powerful economy turns into real-world benfits like human rights and fair elections.
+My predictor for this hypothesis is economic development, applied through GDP per Capita (constant 2017 international $). This data is pulled from the World Bank's World Development Indicators (WDI). I will be using a Logarithmic Scale (log10) as a way to measure proportions instead of just raw totals; it is a way to create a fair ground to compare very rich and very poor countries. By applying this transformation, the analysis accounts for the 'diminishing returns' of wealth, acknowledging that a marginal increase in income has a far greater impact on the institutional caliber of a developing nation than on a wealthy one. This ensures that the extreme gaps of global economies does not skew my results, allowing a more accurate visualization of how incremental economic growth correlates with political change. While GDP measures a country's wealth, the Varieties of Democracy (V-Dem) data shows us the actual political results. With these scores, we can see exactly how a powerful economy turns into real-world benfits like human rights and fair elections.
+
+The Varities of Democracy or V-Dem data has two primary indices I focused on in this study: the Polyarchy Index and the Liberal Democracy Index. First, I used the Polyarchy Index to operationalize democracy; this index focuses on electoral quality, such as the freedom of assosciation and the legitimacy of the voting process. Second, I utilized the Liberal Democracy Index to measure human rights and the "liberal" components of government, such as individual liberties and judicial limits on executive power. Unlike simple binary labels that sort countries as "free" or "unfree", these indices provide a granular 0-to-1 scale. This allos for a much more precise analysis on how sensitive a country's political climate is to the economic fluctuations of the independent variable.
+
+
+For this study, the predictor will be my independent variable and the outcomes (democracy and human rights) will be my dependent variables. I have designated economic development as the independent variable because it serves as the hypothesized "driver" of political change. In this model, the economy takes the place of the input; I am testing whether changes in a nation's wealth levels accurately predict the shape and quality of its democratic institutions and human rights protections. For my dependent variables, I have chosen the V-Dem Polyarchy and Liberal Democracy indices; they represent the political and social outcomes I am seeking to explain. In this study, these variables function as the results that are hypothesized to change in response to the economic foundation provided by the independent variable.
 
 
 
+
+
+## Results
 
 
 ```{r}
@@ -34,7 +42,7 @@ head(vdem)
 
 
 
-## Loading, Cleaning, and Visualizing the Data
+## Main Analysis
 
 ```{r}
 library(tidyverse)
@@ -67,7 +75,8 @@ ggplot(clean_data, aes(x = year, y = v2x_polyarchy, color = country_name)) + geo
 
 
 
-## Milestone 4: One visualization and one analysis that attempts to answer my research question
+## Table 1: Global Snapshot of Wealth vs Democracy (2021)
+
 
 
 
@@ -85,7 +94,7 @@ knitr:: kable(global_analysis_table, digits = 2, caption = "Table 1: Global Snap
 
 global_cor <- cor(global_clean$gdp_per_cap, global_clean$v2x_polyarchy, use = "complete.obs")
 ```
-Analysis:
+## Analysis of Results:
 The calculated correlation coefficient of 0.65 provides strong evidential support for the hypothesis that economic development serves as a foundational influence for democratic outcomes across diverse global contexts. While the apex nations demonstrate that high levels of wealth are consistently paired with dominating democracy, the presence of outliers like China suggests that economic growth is a necessary but not always sufficient condition for political liberalization. Ultimately, this positive relationship indicates that as nations like Ethiopia and Nigeria continue to develop, their structural and institutional capacity for sustaining democratic institutions and human rights protections likely increases.
 
 
