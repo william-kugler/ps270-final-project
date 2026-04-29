@@ -72,12 +72,6 @@ ggplot(clean_data, aes(x = year, y = v2x_polyarchy, color = country_name)) + geo
 ```
 
 
-
-
-
-
-
-
 ## Table 1: Global Snapshot of Wealth vs Democracy (2021)
 
 ```{r}
@@ -101,6 +95,9 @@ library(tidyverse)
 library(WDI) 
 library(vdemdata)
 library(ggrepel)
+library(modelsummary)
+
+
 
 global_list <- c("CAN", "USA", "MEX", "ETH", "ZAF", "NGA", "KEN", "DEU", "FRA", "GBR", "CHN", "JPN", "IND", "AUS", "BRA", "ARG", "CHL") 
 
@@ -111,16 +108,15 @@ vdem_2021 <- vdem |> filter(year == 2021 & country_text_id %in% global_list) |> 
 
 global_clean <- vdem_2021 |> left_join(gdp_2021, by = c("country_text_id" = "iso3c", "year" = "year"))
 
-ggplot(global_clean, aes(x = gdp_per_cap, y = v2x_polyarchy)) + geom_point(color = "darkblue", size = 3, alpha = 0.6) + geom_text_repel(aes(label = country_name), size = 3, max.overlaps = 15) + geom_smooth(method = "lm", color = "red", se = FALSE) + scale_x_log10(labels = scales::label_dollar()) + theme_minimal() + labs(title = "Economic Development vs. Democratic Outcomes", subtitle = "Testing the hypothesis: Do wealthier countries have have stronger democratic patterns?", x = "GDP per Capita (Log Scale)", y = "Democracy Score (0-1)", color = "Country", caption = "Data Source: V-Dem and World Bank")
+model <- lm(v2x_polyarchy ~ log10(gdp_per_cap), data = global_clean)
+
+modelsummary(model, stars = TRUE, coef_rename = c("log10(gdp_per_cap)" = "Economic Development (Log GDP)", "(Intercept)" = "Baseline Intercept"), statistic = "p.value", gof_map = c("nobs", "r.squared"), title = "Table 2: Regression of Democracy on Log-GDP", notes = "Note: Stars indicated statistical significance (* p < .05, ** p < .01, *** p < .001).")
+
+ggplot(global_clean, aes(x = gdp_per_cap, y = v2x_polyarchy)) + geom_point(color = "darkblue", size = 3, alpha = 0.6) + geom_text_repel(aes(label = country_name), size = 3, max.overlaps = 15) + geom_smooth(method = "lm", color = "red", se = FALSE) + scale_x_log10(labels = scales::label_dollar()) + theme_minimal() + labs(title = "Economic Development vs. Democratic Outcomes", subtitle = "Testing the hypothesis: Do wealthier countries have stronger democratic patterns?", x = "GDP per Capita (Log Scale)", y = "Democracy Score (0-1)", color = "Country", caption = "Data Source: V-Dem and World Bank")
 ```
-
-
 
 ## Main Analysis
 ```{r}
-model <- lm(v2x_polyarchy ~ log10(gdp_per_cap), data = global_clean)
-
-
 ggplot(global_clean, aes(x = gdp_per_cap, y = v2x_polyarchy)) + geom_point(color = "green", size = 3, alpha = 0.6) + geom_text_repel(aes(label = country_name), size = 3) + scale_x_log10(labels = scales::label_dollar()) + theme_minimal() + labs(title = "Global Main Analysis: Wealth vs Deomocracy", subtitle = "Regression line showing the predicted impact of GDP on Democracy Scores", x = "GDP per Capita (Log Scale)", y = "Deomocracy Score (0-1)", caption = "Data Source: V-Dem and World Bank (WDI)")
 ```
 
