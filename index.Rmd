@@ -42,7 +42,7 @@ head(vdem)
 
 
 
-## Main Analysis
+## Preliminary Visualization for the Main Analysis
 
 ```{r}
 library(tidyverse)
@@ -68,19 +68,17 @@ clean_data <- vdem_subset |>
 
 
 
-ggplot(clean_data, aes(x = year, y = v2x_polyarchy, color = country_name)) + geom_line(linewidth = 1.2) + geom_point() + theme_minimal() + labs(title = "Democracy Trajectory: Canada vs. Ethiopia", subtitle = "Measuring Electoral Democracy (V-Dem Polyarchy Index)", x = "Year", y = "Democracy Score(0-1)", color = "Country", caption = "Data Source: vdem)") + theme(legend.position = "bottom", plot.title = element_text(face = "bold"))
+ggplot(clean_data, aes(x = year, y = v2x_polyarchy, color = country_name)) + geom_line(linewidth = 1.2) + geom_point() + theme_minimal() + labs(title = "Democracy Trajectory: Canada vs. Ethiopia", subtitle = "Measuring Electoral Democracy (V-Dem Polyarchy Index)", x = "Year", y = "Democracy Score(0-1)", color = "Country", caption = "Data Source: vdem") + theme(legend.position = "bottom", plot.title = element_text(face = "bold"))
 ```
 
 
 
 
 
+
+
+
 ## Table 1: Global Snapshot of Wealth vs Democracy (2021)
-
-
-
-
-
 
 ```{r}
 library(dplyr)
@@ -94,14 +92,6 @@ knitr:: kable(global_analysis_table, digits = 2, caption = "Table 1: Global Snap
 
 global_cor <- cor(global_clean$gdp_per_cap, global_clean$v2x_polyarchy, use = "complete.obs")
 ```
-## Analysis of Results:
-The calculated correlation coefficient of 0.65 provides strong evidential support for the hypothesis that economic development serves as a foundational influence for democratic outcomes across diverse global contexts. While the apex nations demonstrate that high levels of wealth are consistently paired with dominating democracy, the presence of outliers like China suggests that economic growth is a necessary but not always sufficient condition for political liberalization. Ultimately, this positive relationship indicates that as nations like Ethiopia and Nigeria continue to develop, their structural and institutional capacity for sustaining democratic institutions and human rights protections likely increases.
-
-
-Brief Discussion:
-This table provides a fascinating contrast between a developed North American economy and an emerging African economy. Both show a strong statistical link between wealth and health. In the poor country (Ethiopia), the economy acts as a "survival engine" - driving human rights and health improvements. In a wealthy country (Canada), the economy acts as a "maintenance engine" - sustaining high standards but seeing diminishing returns for each dollar.
-Because the economy in Ethiopia is such a matter of life and death(as seen by the 0.96 correlation), voters there might prioritize economic growth and stability far more than voters in Canada, where the "Longevity Increase" has slowed down and basic survival is already guaranteed.
-
 
 
 ## Scatter Plot with a Regression Line: The "Rights vs Wealth" Scatter Plot
@@ -126,14 +116,24 @@ ggplot(global_clean, aes(x = gdp_per_cap, y = v2x_polyarchy)) + geom_point(color
 
 
 
+## Main Analysis
+```{r}
+model <- lm(v2x_polyarchy ~ log10(gdp_per_cap), data = global_clean)
+
+
+ggplot(global_clean, aes(x = gdp_per_cap, y = v2x_polyarchy)) + geom_point(color = "green", size = 3, alpha = 0.6) + geom_text_repel(aes(label = country_name), size = 3) + scale_x_log10(labels = scales::label_dollar()) + theme_minimal() + labs(title = "Global Main Analysis: Wealth vs Deomocracy", subtitle = "Regression line showing the predicted impact of GDP on Democracy Scores", x = "GDP per Capita (Log Scale)", y = "Deomocracy Score (0-1)", caption = "Data Source: V-Dem and World Bank (WDI)")
+```
+
+## Analysis of Results:
+The calculated correlation coefficient of 0.65 provides strong evidential support for the hypothesis that economic development serves as a foundational influence for democratic outcomes across diverse global contexts. While the apex nations demonstrate that high levels of wealth are consistently paired with dominating democracy, the presence of outliers like China suggests that economic growth is a necessary but not always sufficient condition for political liberalization. Ultimately, this positive relationship indicates that as nations like Ethiopia and Nigeria continue to develop, their structural and institutional capacity for sustaining democratic institutions and human rights protections likely increases.
+
+Beyond the math, the plots clearly illustrated a "Ladder of Development" that supports my core hypothesis. The visual evidence in the scatter plot reinforces this relationship through the upward-sloping red regression line, which represents the predicted path of democratic transition as wealth increases in a country. Most countries in the sample sit relatively close to this line, suggesting that the model has high substantive meaning. As we increase GDP, there is a consistent climb in the Democracy Score; for instance, the "Middle Rung" nations like Chile and Mexico illustrate the medium of this trajectory, showing that as a country moves past the initial stages of poverty, there is a measurable lift in political participation and human rights. This trend suggests that economic development creates a floor for democratic stability that is absent in the lowest-income countries.
+
+From a technical standpoint, the regression output confirms that this relationship is statistically significant, with a p-value well below the standard 0.05 threshold. This allows us to reject the null hypothesis and say with great confidence that the link between GDP and democracy is not due to random chance. However, while this correlation is high, we need to be careful to not interpret these results as purely causal. While wealth provides the resources for education and institutional growth, nations like China remind us that the political outcomes are also shaped by historical legacies and unique policy choices. Thus, while the regression line provides a grand global patter, economic growth should be viewed as a strong facilitator of democracy rather than an automatic guarantee.
 
 
 
+## Conclusion
 
 
-## Dependent Variables
-In my research, democracy and human rights are being measured using "proxy variables", or statistical indicators that stand in for these broader, more complicated concepts.
 
-For measuring democracy, I used the Voice and Accountability indicator. This is a composite score that evaluates how much a country's citizens can participate in selecting their own government, as well as the level of freedoms such as expression, association, and a free press. Higher scores indicate a more robust democratic enviornment where "voting patterns" actually influence policy.
-
-For measuring human rights, I used the Life Expectancy at Birth indicator as a proxy for the most fundamental right: the Right to Life and Health. In developing countries like Ethiopia, gains in life expectancy reflect a government's success in protecting basic survival needs such as food, water, and safety. By comparing this to GDP, we are measuring the "Efficiency of Rights", or how effectiviely a country converts its resources and wealth into the preservation of human life.
