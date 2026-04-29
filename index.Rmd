@@ -25,10 +25,6 @@ The Varities of Democracy or V-Dem data has two primary indices I focused on in 
 
 For this study, the predictor will be my independent variable and the outcomes (democracy and human rights) will be my dependent variables. I have designated economic development as the independent variable because it serves as the hypothesized "driver" of political change. In this model, the economy takes the place of the input; I am testing whether changes in a nation's wealth levels accurately predict the shape and quality of its democratic institutions and human rights protections. For my dependent variables, I have chosen the V-Dem Polyarchy and Liberal Democracy indices; they represent the political and social outcomes I am seeking to explain. In this study, these variables function as the results that are hypothesized to change in response to the economic foundation provided by the independent variable.
 
-
-
-
-
 ## Results
 
 
@@ -72,20 +68,7 @@ ggplot(clean_data, aes(x = year, y = v2x_polyarchy, color = country_name)) + geo
 ```
 
 
-## Table 1: Global Snapshot of Wealth vs Democracy (2021)
 
-```{r}
-library(dplyr)
-library(knitr)
-global_analysis_table <- global_clean |>
-  select(country_name, gdp_per_cap, v2x_polyarchy) |>
-  rename(Country = country_name, `GDP per Capita` = gdp_per_cap, `Democracy Score` = v2x_polyarchy) |>
-  arrange(desc(`GDP per Capita`)) 
-
-knitr:: kable(global_analysis_table, digits = 2, caption = "Table 1: Global Snapshot of Wealth vs Democracy (2021)")
-
-global_cor <- cor(global_clean$gdp_per_cap, global_clean$v2x_polyarchy, use = "complete.obs")
-```
 
 
 ## Scatter Plot with a Regression Line: The "Rights vs Wealth" Scatter Plot
@@ -118,6 +101,21 @@ ggplot(global_clean, aes(x = gdp_per_cap, y = v2x_polyarchy)) + geom_point(color
 ## Main Analysis
 ```{r}
 ggplot(global_clean, aes(x = gdp_per_cap, y = v2x_polyarchy)) + geom_point(color = "green", size = 3, alpha = 0.6) + geom_text_repel(aes(label = country_name), size = 3) + scale_x_log10(labels = scales::label_dollar()) + theme_minimal() + labs(title = "Global Main Analysis: Wealth vs Deomocracy", subtitle = "Regression line showing the predicted impact of GDP on Democracy Scores", x = "GDP per Capita (Log Scale)", y = "Deomocracy Score (0-1)", caption = "Data Source: V-Dem and World Bank (WDI)")
+```
+
+## Table 1: Global Snapshot of Wealth vs Democracy (2021)
+
+```{r}
+library(dplyr)
+library(knitr)
+global_analysis_table <- global_clean |>
+  select(country_name, gdp_per_cap, v2x_polyarchy) |>
+  rename(Country = country_name, `GDP per Capita` = gdp_per_cap, `Democracy Score` = v2x_polyarchy) |>
+  arrange(desc(`GDP per Capita`)) 
+
+knitr:: kable(global_analysis_table, digits = 2, caption = "Table 1: Global Snapshot of Wealth vs Democracy (2021)")
+
+global_cor <- cor(global_clean$gdp_per_cap, global_clean$v2x_polyarchy, use = "complete.obs")
 ```
 
 ## Analysis of Results:
