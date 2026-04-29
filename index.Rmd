@@ -134,6 +134,6 @@ From a technical standpoint, the regression output confirms that this relationsh
 
 
 ## Conclusion
-
+In closing, the data provides strong support for the hypothesis that economic development and democratic quality are closely linked, as shown by the large 0.65 correlation and consistent upward slope of the regression line. While the "Ladder of Development" is a clear global trend, the presence of anomalies like China demonstrate that wealth is a powerful catalyst for democracy rather than an absolute guarantee. This study does have its limitations, including a small sample of 17 countries and confounding variables, such as a nation's history or regional conflicts that GDP alone cannot explain. If I was provided with more time and money, I would expand the data set to include all global nations over a 50-year period to see if economic growth in one decade consistently predicts democratic shifts in the next, which would allow for a much stronger argument regarding cause and effect.
 
 
