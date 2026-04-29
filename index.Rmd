@@ -1,7 +1,7 @@
 ---
 title: "PS270 Final Project"
 author: "Will Kugler"
-description: "My final project"
+description: "How does economic development influence voting patterns and human rights across unique global contexts?"
 output:
   distill::distill_article:
     self_contained: false
@@ -112,7 +112,7 @@ model <- lm(v2x_polyarchy ~ log10(gdp_per_cap), data = global_clean)
 
 modelsummary(model, stars = TRUE, coef_rename = c("log10(gdp_per_cap)" = "Economic Development (Log GDP)", "(Intercept)" = "Baseline Intercept"), statistic = "p.value", gof_map = c("nobs", "r.squared"), title = "Table 2: Regression of Democracy on Log-GDP", notes = "Note: Stars indicated statistical significance (* p < .05, ** p < .01, *** p < .001).")
 
-ggplot(global_clean, aes(x = gdp_per_cap, y = v2x_polyarchy)) + geom_point(color = "darkblue", size = 3, alpha = 0.6) + geom_text_repel(aes(label = country_name), size = 3, max.overlaps = 15) + geom_smooth(method = "lm", color = "red", se = FALSE) + scale_x_log10(labels = scales::label_dollar()) + theme_minimal() + labs(title = "Economic Development vs. Democratic Outcomes", subtitle = "Testing the hypothesis: Do wealthier countries have stronger democratic patterns?", x = "GDP per Capita (Log Scale)", y = "Democracy Score (0-1)", color = "Country", caption = "Data Source: V-Dem and World Bank")
+ggplot(global_clean, aes(x = gdp_per_cap, y = v2x_polyarchy)) + geom_point(color = "darkblue", size = 3, alpha = 0.6) + geom_text_repel(aes(label = country_name), size = 3, max.overlaps = Inf, box.padding = 0.5) + geom_smooth(method = "lm", color = "red", se = FALSE) + scale_x_log10(labels = scales::label_dollar()) + theme_minimal() + labs(title = "Economic Development vs. Democratic Outcomes", subtitle = "Testing the hypothesis: Do wealthier countries have stronger democratic patterns?", x = "GDP per Capita (Log Scale)", y = "Democracy Score (0-1)", color = "Country", caption = "Data Source: V-Dem and World Bank")
 ```
 
 ## Main Analysis
