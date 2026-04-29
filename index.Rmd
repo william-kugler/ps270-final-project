@@ -32,7 +32,7 @@ For this study, the predictor will be my independent variable and the outcomes (
 ## Results
 
 
-```{r}
+```{r, eval = FALSE}
 library(tidyverse)
 library(WDI)
 library(vdemdata)
